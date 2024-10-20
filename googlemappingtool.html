@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Mapping Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesgmt.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbDthZrcWYgOag69X515kby9fohJaEkKg&libraries=places,geometry&callback=initMap" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <link rel="shortcut icon" href="marker.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Main Sidebar with icons -->
+    <div class="main-sidebar" onclick="toggleInsightsSidebar()">
+        <div class="icon">
+            <i class="ri-list-check"></i>
+        </div>
+    </div>
+
+    <!-- File Sidebar with icons -->
+    <div class="file-sidebar" onclick="toggleUploadSidebar()">
+        <div class="icon">
+            <i class="ri-file-upload-line"></i>    
+        </div>
+    </div>
+
+    <!-- Modal Pop up with icons -->
+    <div class="question" onclick="openDocumentationModal()">
+        <div class="icon">
+            <i class="ri-question-line"></i>
+        </div>
+    </div>
+
+    <!-- Insights Sidebar -->
+    <div id="insightsSidebar">
+        <h3>Building Types</h3>
+        <div class="checkbox-container-insights"></div>
+    </div>
+
+    <!-- Upload File Sidebar -->
+    <div id="uploadSidebar" class="upload-sidebar">
+        <h3>Upload File</h3>
+        <input type="file" id="fileUpload" class="upload-button" />
+        <button id="downloadBtn" class="download-button">Download Processed File</button>
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar">0%</div>
+        </div>
+    </div>
+
+    <!-- Search Bar (ZIP or Address) -->
+    <div id="control" class="search-input">
+        <input type="text" id="zipInput" placeholder="Enter ZIP Code" />
+        <input type="text" id="addressInput" placeholder="Enter Address" style="display: none;" />
+        <button id="searchBtn" class="search-btn" onclick="searchZipCode()">Search ZIP Code</button>
+    </div>
+
+    <!-- Toggle for ZIP/Address Search -->
+    <div class="toggle-container">
+        <label class="toggle-switch">
+            <input type="checkbox" onchange="toggleSearchMode()">
+            <span class="slider round"></span>
+        </label>
+    </div>
+
+    <div id="map"></div>
+
+    <!-- Notification pill for "Copied to Clipboard" -->
+    <div id="notification">Copied to Clipboard</div>
+
+    <!-- Documentation Modal -->
+    <div id="documentationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDocumentationModal()">&times;</span>
+            <h2>Google Mapping Tool Documentation</h2>
+            <iframe id="pdfViewer" src="" class="pdf-viewer"></iframe>
+            <br>
+            <a href="Google Mapping Tool (Program Documentation).pdf" download class="download-btn">Download Full Documentation</a>
+        </div>
+    </div>
+
+    <!-- Modal for PDF Viewer -->
+    <div id="pdfViewerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePdfViewerModal()">&times;</span>
+            <div class="toolbar">
+                <button onclick="prevPage()">Previous</button>
+                <span>Page: <span id="pageNum"></span> / <span id="pageCount"></span></span>
+                <button onclick="nextPage()">Next</button>
+                <button onclick="zoomIn()">Zoom In</button>
+                <button onclick="zoomOut()">Zoom Out</button>
+                <a href="/path/to/documentation.pdf" download class="download-btn">Download PDF</a>
+            </div>
+            <canvas id="pdfCanvas"></canvas>
+        </div>
+    </div>
+
+    <script src="scriptsgmt.js"></script>
+</body>
+</html>
