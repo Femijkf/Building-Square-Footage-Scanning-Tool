@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Mapping Tool</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        /* Ensures body and html cover the full screen */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Background image and blur */
+        .background-blur {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('earth.jpg') no-repeat center center fixed;
+            background-size: cover;
+            z-index: 1;
+            transition: filter 0.5s ease;
+        }
+
+        /* Blur effect */
+        .background-blur.blurred {
+            filter: blur(10px);
+        }
+
+        /* Foreground content */
+        .container {
+            z-index: 2;
+            text-align: center;
+            position: relative;
+            transition: filter 0.7s ease, opacity 0.7s ease;
+        }
+
+        /* Blur and fade effect for text and buttons */
+        .container.blurred {
+            filter: blur(5px);
+            opacity: 0.5;
+        }
+
+        h1 {
+            font-size: 100px;
+            margin-bottom: 10px;
+            font-weight: 200;
+            text-shadow: #000 10px 0 10px;
+        }
+
+        .btn {
+            font-size: 20px;
+            background-color: #76ABAE;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #5e898e;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: rgb(172, 38, 38);
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        #welcomePage, #passwordPage {
+            display: none;
+        }
+
+        #welcomePage.active, #passwordPage.active {
+            display: block;
+        }
+
+        input[type="password"] {
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 20px;
+            border: none;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<link rel="shortcut icon" href="marker.png" type="image/x-icon">
+<body>
+    <!-- Fullscreen background image layer that will blur -->
+    <div class="background-blur"></div>
+
+    <!-- Foreground content -->
+    <div id="welcomePage" class="container active">
+        <h1>Google Mapping Tool</h1>
+        <button class="btn" onclick="showPasswordPage()">Get Started</button>
+    </div>
+
+    <div id="passwordPage" class="container hidden">
+        <h1>Enter Access Code</h1>
+        <input type="password" id="passwordInput" placeholder="Enter access code" />
+        <div>
+            <button class="btn" onclick="checkPassword()">Submit</button>
+            <button class="btn" onclick="goBack()">Back</button>
+        </div>
+        <div id="errorMessage" class="error hidden">Incorrect password. Try again!</div>
+    </div>
+
+    <script>
+        const correctPassword = "12345"; // You can change this to any password you want
+
+        function showPasswordPage() {
+            // Add blur effect to the background and container (text and buttons)
+            document.querySelector('.background-blur').classList.add('blurred');
+            document.querySelector('.container.active').classList.add('blurred');
+            
+            // Show password page after the blur effect
+            setTimeout(() => {
+                document.getElementById('welcomePage').classList.remove('active');
+                document.getElementById('passwordPage').classList.add('active');
+            }, 500);
+        }
+
+        function checkPassword() {
+            const enteredPassword = document.getElementById('passwordInput').value;
+            if (enteredPassword === correctPassword) {
+                window.location.href = 'googlemappingtool.html'; // Change this to your main tool page
+            } else {
+                document.getElementById('errorMessage').classList.remove('hidden');
+            }
+        }
+
+        function goBack() {
+            // Remove blur effect
+            document.querySelector('.background-blur').classList.remove('blurred');
+            document.querySelector('.container.blurred').classList.remove('blurred');
+
+            // Go back to the welcome page
+            document.getElementById('passwordPage').classList.remove('active');
+            document.getElementById('welcomePage').classList.add('active');
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
